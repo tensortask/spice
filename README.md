@@ -1,5 +1,7 @@
 <p align="center">
+<a href="https://tensortask.com">
 <img width="200" alt="TensorTask Logo" src="https://storage.googleapis.com/tensortask-static/tensortask_transparent.png">
+</a>
 </p>
 
 [![GoDoc][1]][2] [![Go Report Card][3]][4] [![Keybase Chat][5]][6] [![Cloud Build][7]][8]
