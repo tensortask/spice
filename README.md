@@ -21,7 +21,7 @@
 [12]: https://www.imperialviolet.org/2014/06/27/streamingencryption.html
 [13]: https://godoc.org/golang.org/x/crypto/nacl/secretbox
 
-# 🌶 Spice: Blazingly Fast Block Encryption
+# 🌶 Spice: Blazingly Fast Chunk Encryption
 
 ```diff
 - #############################
