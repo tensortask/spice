@@ -28,11 +28,6 @@
 - #   NOT PRODUCTION READY    #
 - #############################
 ```
-
-## Usage
-
-`go test`
-
 ## Aplications:
 * Big Data
 * P2P
@@ -78,3 +73,13 @@ When sending data over the network, chunking is pretty much a given. TLS has a m
 >-[Golang Developer's][13]
 
 **Each data block is chunked in 16368 byte sections and sealed with a 16 byte signature. This results in encrypted chunks that are exactly 16kb. Optimal for web transmission and safe for small computers.**
+
+## Usage
+
+`go test`
+
+## Performance
+
+2017 Macbook, 1.3Ghz i5, 8GB ram = 146.69 MB/s
+
+Well above average consumer internet connection speeds ✅
