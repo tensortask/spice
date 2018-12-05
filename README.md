@@ -23,6 +23,16 @@
 
 # 🌶 Spice: Blazingly Fast Block Encryption
 
+```diff
+- #############################
+- #   NOT PRODUCTION READY    #
+- #############################
+```
+
+## Usage
+
+`go test`
+
 ## Aplications:
 * Big Data
 * P2P
