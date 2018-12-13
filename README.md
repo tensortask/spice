@@ -58,6 +58,8 @@ In order to mitigate chunk-level replay, some groups have proposed using a incre
 
 Instead of using a counter, spice links chunks of data by using the first 24 bytes of the last encrypted block. This is analogous to how a blockchain references the previous hash. Chunk referencing is also very efficient.
 
+**A CRYPTOGRAPHICALLY RANDOM 24 BYTE ARRAY MUST BE GENERATED FOR THE FIRST NONCE!**
+
 ## 16kb Encrypted Chunk Size
 Rationale: 
 
