@@ -11,8 +11,8 @@ import (
 //
 const DefaultChunkSize int = 16368
 
-// Overhead ...
-const Overhead int = 16
+// DefaultOverhead ...
+const DefaultOverhead int = 16
 
 // Keypair ...
 type Keypair struct {
