@@ -11,5 +11,5 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-big.txt
-big_copy.txt
+testing/decrypted_shakespeare.txt
+testing/encrypted_shakespeare.txt
