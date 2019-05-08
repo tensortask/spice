@@ -17,8 +17,8 @@ type Encryptor struct {
 }
 
 // NewEncryptor creates an Encryptor with the default chunk size.
-func NewEncryptor(writer io.Writer, nonce *[24]byte, sharedKey *[32]byte) *Encryptor {
-	return &Encryptor{writer: writer, nonce: nonce, sharedKey: sharedKey, chunkSize: DefaultChunkSize}
+func NewEncryptor(writer io.Writer, nonce [24]byte, sharedKey *[32]byte) *Encryptor {
+	return &Encryptor{writer: writer, nonce: &nonce, sharedKey: sharedKey, chunkSize: DefaultChunkSize}
 }
 
 // Encrypt /..
