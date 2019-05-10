@@ -28,6 +28,9 @@
 - #   NOT PRODUCTION READY    #
 - #############################
 ```
+
+This package has not undergone a security audit. Please DO NOT use this for mission critical comms just yet.
+
 ## Applications:
 * Big Data
 * P2P
