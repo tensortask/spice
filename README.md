@@ -31,6 +31,13 @@
 
 This package has not undergone a security audit. Please DO NOT use this for mission critical comms just yet.
 
+## To Do:
+
+[ ] finish docs
+[ ] complete unit test
+[ ] security audit
+[ ] iterate API based on how spice is used
+
 ## Applications:
 * Big Data
 * P2P
