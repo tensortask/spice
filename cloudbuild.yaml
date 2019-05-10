@@ -1,0 +1,6 @@
+# CLOUD BUILD TESTING
+steps:
+- name: 'golang:1.12.5-stretch'
+  entrypoint: 'go'
+  args: ['test', './...']
+  env: ['GO111MODULE=on', 'PROJECT_ROOT=spice']
