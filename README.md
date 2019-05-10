@@ -28,6 +28,16 @@
 - #   NOT PRODUCTION READY    #
 - #############################
 ```
+
+This package has not undergone a security audit. Please DO NOT use this for mission critical comms just yet.
+
+## To Do:
+
+- [ ] finish docs
+- [ ] complete unit test	
+- [ ] security audit
+- [ ] iterate API based on how spice is used		
+
 ## Applications:
 * Big Data
 * P2P
@@ -78,9 +88,169 @@ When sending data over the network, chunking is pretty much a given. TLS has a m
 
 ## Usage
 
-`go test`
+#### Encrypted Over The Wire
+
+RUN THIS EXAMPLE (from spice root directory)!
+
+1st terminal: `go run examples/network/server.go`
+
+2nd terminal: `go run examples/network/client.go`
+
+```golang
+# server.go
+
+package main
+
+import (
+	"fmt"
+	"net"
+	"os"
+
+	"github.com/tensortask/spice"
+)
+
+const (
+	connHost = "localhost"
+	connPort = "6666"
+	connType = "tcp"
+)
+
+var (
+	nonce     = [24]byte{58, 230, 79, 44, 187, 45, 107, 226, 245, 53, 169, 118, 218, 116, 235, 95, 132, 127, 166, 200, 203, 141, 251, 51}
+	sharedKey = &[32]byte{199, 156, 103, 110, 157, 5, 107, 139, 94, 138, 53, 214, 74, 100, 211, 97, 106, 48, 11, 179, 200, 19, 244, 108, 138, 167, 49, 163, 156, 176, 66, 64}
+)
+
+func main() {
+	// Listen for incoming connections.
+	listener, err := net.Listen(connType, connHost+":"+connPort)
+	if err != nil {
+		panic(err)
+	}
+	// Close the listener when the application closes.
+	defer listener.Close()
+	fmt.Println("Listening on " + connHost + ":" + connPort)
+	for {
+		// Listen for an incoming connection.
+		conn, err := listener.Accept()
+		if err != nil {
+			panic(err)
+		}
+		// Handle connections in a new goroutine.
+		go handleRequest(conn)
+	}
+}
+
+// Handles incoming requests.
+func handleRequest(conn net.Conn) {
+	decryptor := spice.NewDecryptor(os.Stdout, nonce, sharedKey)
+	err := decryptor.DecryptFromReader(conn)
+	if err != nil {
+		panic(err)
+	}
+	conn.Close()
+}
+```
+
+```golang
+# client.go
+
+package main
+
+import (
+	"net"
+
+	"github.com/tensortask/spice"
+)
+
+const (
+	connHost = "localhost"
+	connPort = "6666"
+	connType = "tcp"
+	fileName = "testing/a_midsummers_night's_dream.txt"
+)
+
+var (
+	nonce     = [24]byte{58, 230, 79, 44, 187, 45, 107, 226, 245, 53, 169, 118, 218, 116, 235, 95, 132, 127, 166, 200, 203, 141, 251, 51}
+	sharedKey = &[32]byte{199, 156, 103, 110, 157, 5, 107, 139, 94, 138, 53, 214, 74, 100, 211, 97, 106, 48, 11, 179, 200, 19, 244, 108, 138, 167, 49, 163, 156, 176, 66, 64}
+)
+
+func main() {
+
+	// connect to this socket
+	conn, err := net.Dial(connType, connHost+":"+connPort)
+	if err != nil {
+		panic(err)
+	}
+
+	encryptor := spice.NewEncryptor(conn, nonce, sharedKey)
+	encryptor.EncryptFile(fileName)
+
+}
+```
+
+#### File Encryption
+
+
+RUN THIS EXAMPLE (from spice root directory)!
+
+1st terminal: `go run examples/file/main.go`
+
+```golang
+# main.go
+
+package main
+
+import (
+	"os"
+
+	"github.com/tensortask/spice"
+)
+
+func main() {
+	hostKeys, err := spice.RandomKeyPair()
+	if err != nil {
+		panic(err)
+	}
+	peerKeys, err := spice.RandomKeyPair()
+	if err != nil {
+		panic(err)
+	}
+	sharedKey := hostKeys.SharedKey(peerKeys)
+	nonce, err := spice.RandomNonce()
+	if err != nil {
+		panic(err)
+	}
+
+	encryptedFile, err := os.Create("testing/encrypted_shakespeare.txt")
+	if err != nil {
+		panic(err)
+	}
+
+	encryptor := spice.NewEncryptor(encryptedFile, nonce, sharedKey)
+	err = encryptor.EncryptFile("testing/a_midsummers_night's_dream.txt")
+	if err != nil {
+		panic(err)
+	}
+	encryptedFile.Close()
+
+	decryptedFile, err := os.Create("testing/decrypted_shakespeare.txt")
+	if err != nil {
+		panic(err)
+	}
+
+	decryptor := spice.NewDecryptor(decryptedFile, nonce, sharedKey)
+
+	err = decryptor.DecryptFile("testing/encrypted_shakespeare.txt")
+	if err != nil {
+		panic(err)
+	}
+	decryptedFile.Close()
+}
+```
 
 ## Performance
+
+NOTE: this is a very old metric...  recently spice has been clocking in much hotter. Full benchmarks to come.
 
 2017 Macbook, 1.3Ghz i5, 8GB ram = 146.69 MB/s
 
