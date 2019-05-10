@@ -28,7 +28,7 @@
 - #   NOT PRODUCTION READY    #
 - #############################
 ```
-## Aplications:
+## Applications:
 * Big Data
 * P2P
 
